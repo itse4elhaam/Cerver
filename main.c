@@ -52,5 +52,16 @@ int main() {
     exit(EXIT_FAILURE);
   }
 
-  printf("accept success");
+  printf("accept success\n");
+
+  char buffer[1024] = {0};
+
+  int req_result = recv(client_fd, buffer, sizeof(buffer), 0);
+
+  if (req_result < 0) {
+    perror("Request parsing failed\n");
+    exit(EXIT_FAILURE);
+  }
+
+  printf("Request from the frontend: %s", buffer);
 }
