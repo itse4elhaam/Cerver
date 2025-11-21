@@ -3,12 +3,10 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 
-// what is the diff between this and the port var?
-#define LISTEN_BACKLOG 50
-
 // I want to impleent streams(SSE), headers and async as well
 int main() {
   const int PORT = 8080;
+  const int LISTEN_BACKLOG = 50;
   int fd = socket(AF_INET, SOCK_STREAM, 0);
   if (fd < 0) {
     // perror basically logs out the values in the errno, errno holds the error
