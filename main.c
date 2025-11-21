@@ -14,7 +14,7 @@ int main() {
     // perror basically logs out the values in the errno, errno holds the error
     // value after a syscall
     perror("socket connection failed");
-    exit(-1);
+    exit(EXIT_FAILURE);
   }
 
   printf("Socket connection success\n");
@@ -30,19 +30,29 @@ int main() {
 
   if (bind_result < 0) {
     perror("Bind failed");
-    exit(-1);
+    exit(EXIT_FAILURE);
   }
 
   printf("Bind success\n");
 
   int listen_result = listen(fd, LISTEN_BACKLOG);
 
-  // is this how error handling is done in big c apps? there must be a better
-  // way surely
   if (listen_result < 0) {
     perror("listen failed");
-    exit(-1);
+    exit(EXIT_FAILURE);
   }
 
-  printf("Listen success");
+  printf("Waiting for conn at http://localhost:%i \n", PORT);
+
+  struct sockaddr_in client_address;
+  socklen_t client_address_len = sizeof(client_address);
+
+  int client_fd =
+      accept(fd, (struct sockaddr *)&client_address, &client_address_len);
+  if (client_fd < 0) {
+    perror("Accept failed");
+    exit(EXIT_FAILURE);
+  }
+
+  printf("accept success");
 }
