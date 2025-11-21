@@ -1,3 +1,4 @@
+#include <arpa/inet.h>
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,7 +53,12 @@ int main() {
     exit(EXIT_FAILURE);
   }
 
-  printf("accept success\n");
+  /* (inet_ntop = "internet network to presentation", ntohs = "network to host
+   * short") */
+  char client_ip[INET_ADDRSTRLEN];
+  inet_ntop(AF_INET, &client_address.sin_addr, client_ip, INET_ADDRSTRLEN);
+  printf("Accepted connection from %s:%d\n", client_ip,
+         ntohs(client_address.sin_port));
 
   char buffer[1024] = {0};
 
